@@ -1,12 +1,10 @@
 import { expect, test } from "vitest";
 import { Appointment } from "./appointment";
+import { getFutureDate } from "../tests/utils/get-future-date";
 
 test("create an appointment", () => {
-  const startsAt = new Date();
-  const endsAt = new Date();
-
-  // Set the endsAt date to be one day before the startsAt date
-  endsAt.setDate(endsAt.getDate() + 1);
+  const startsAt = getFutureDate("2022-08-10");
+  const endsAt = getFutureDate("2022-08-11");
 
   const appointment = new Appointment({
     customer: "John Doe",
@@ -27,15 +25,12 @@ test("create an appointment", () => {
 });
 
 test("cannot create an appointment with the endsAt date after the startsAt date", () => {
-  const startsAt = new Date();
-  const endsAt = new Date();
-
-  // Set the endsAt date to be one day before the startsAt date
-  endsAt.setDate(endsAt.getDate() - 1);
+  const startsAt = getFutureDate("2022-08-10");
+  const endsAt = getFutureDate("2022-08-09");
 
   // Expect the Appointment constructor to throw an error
   expect(() => {
-    const appointment = new Appointment({
+    return new Appointment({
       customer: "John Doe",
       startsAt,
       endsAt,
@@ -52,7 +47,7 @@ test("cannot create an appointment with startsAt before now", () => {
 
   // Expect the Appointment constructor to throw an error
   expect(() => {
-    const appointment = new Appointment({
+    return new Appointment({
       customer: "John Doe",
       startsAt,
       endsAt,
